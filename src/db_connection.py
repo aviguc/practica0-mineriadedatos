@@ -1,6 +1,6 @@
 def get_db_properties():
-    url="jdbc:mysql://localhost:3306/IBEX35"
-    propiedades={"driver": "com.mysql.cj.jdbc.Driver", "user":"root", "password": ""}
+    url="jdbc:mysql://localhost:3306/IBEX35?useSSL=false&serverTimezone=UTC"
+    propiedades={"driver": "com.mysql.cj.jdbc.Driver", "user":"root", "password": "Alicante07"}
     return url, propiedades
 
 def guardar_tabla_jdbc(df, nombre_tabla, modo="overwrite"):

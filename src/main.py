@@ -1,8 +1,12 @@
+import os
 from spark_session import get_spark_session
 from pyspark.sql.functions import * 
 from pyspark.sql.types import * 
 from pyspark.sql.window import * 
 from db_connection import guardar_tabla_jdbc
+
+directorio_src=os.path.dirname(os.path.abspath(__file__))
+ruta_csv=os.path.normpath(os.path.join(directorio_src, "..", "data", "ibex35_close-2024.csv"))
 
 spark=get_spark_session()
 
@@ -12,7 +16,7 @@ df=(
     spark.read
     .option("header", True)
     .option("sep", ";")
-    .csv("../data/ibex35_close-2024.csv")
+    .csv(ruta_csv)
 )
 
 # Mostrar el esquema inicial
@@ -118,7 +122,7 @@ df_renombrado.select(columnas_solicitadas).show(total,truncate=False)
 print("\n Almacenamiento en base de datos SQL")
 try:
     print("Exportando datos originales (CSV) a la tabla 'Datos2024'...")
-    guardar_tabla_jdbc(df, "Datos2024, modo=overwrite")
+    guardar_tabla_jdbc(df, "Datos2024", modo="overwrite")
     print("Tabla 'Datos2024' almacenada correctamente")
 except Exception as e:
     print(f"No se pudo conectar a MySQL para guardar datos brutos ({e})")
